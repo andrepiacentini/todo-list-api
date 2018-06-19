@@ -6,7 +6,7 @@
         "zf2",
         "api"
     ],
-    "homepage": "http://framework.zend.com/",
+    "homepage": "https://andrepiacentini.com.br/boilerplate-api",
     "require": {
         "php": ">=7.1",
         "zendframework/zendframework": "2.*",

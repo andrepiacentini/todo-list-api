@@ -1,0 +1,33 @@
+{
+  "id": "ce561ed7-d355-435f-9704-e5b0ee3df956",
+  "name": "Boilerplate API",
+  "values": [
+    {
+      "key": "api",
+      "value": "http://api.localhost/v1",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "token",
+      "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXUyJ9.eyJpYXQiOjE1MjA0NzE2MDIsImp0aSI6IlNjUFdyc3ozM21aSFNJRTN5OHBIUlhkZWhxTURBU25CK1JMY2xWU250NXc9IiwiaXNzIjoiZW5naWUtb3JjYW1lbnRvIiwibmJmIjoxNTIwNDcxNjEyLCJleHAiOjE1MjA0NzE2NzIsImRhdGEiOnsiaWQiOjEsInVzZXJuYW1lIjoidGVzdGVAZHppZ3VhbC5jb20uYnIiLCJuYW1lIjoidGVzdGUiLCJwaG9uZSI6IjA0ODk5OTYxMjA1NSIsImNvbXBhbnkiOm51bGwsImxhbmciOm51bGx9fQ.aQTcrjlgRgUmywx5LmyMuY5v7hZwQcjo9xAMqPBw8Ace6BqXrWWSWtgCNpzW1p4Fq1VAKN5mtiTMgJNQZr8T2bM1TLodMeVKntWDPgl0YotS3EhKUBqYwbd7wNgR03bji4ZbhrJBhnQx7FSLhaeA13YONShYZ_k5vvOJBsXB7uBp3V2eEXzy7N2XlD3KlCw93KQibDtbr-OFDXsjcH6FllLy31AbZ5P7axrdZPJas_aHG8qZYczAvyVDIK_sCNI3fCjqVm3LtCi4MFoppHghapMU-A04VCPzSAHG9QPNhRo_yExbInQ9yUbSQemqtyQQY-NIrIfboYs6sK1uH9xPrXCR22Meb0FFBryMyCJYI2pOcz-FYzQ0DqhWvX_SIh-qXnZrA_5S1ByjuRVtugorAu2gq45zqt2hCSpgEPTUhRfBpbRTGtt50IjQew-mTCg6dB-XgfFdOyvMesuRHc6uFESinEtaNOGQbTYB5sIXXOmfa_XHx7EzESjiel3wOlCi1BwhTBKVwzkAX4e8pAf5bo8J7nvsca24ZcarO_Qk0swYHV2hkRUvtYsiMjKBii3DBGsaGWJbG0Hbesa5vdEQMefh--qrgjogLAOr-DywSvwkwtno64BHQ6qNCuQw8uQFx4WX8qLMcXIENi0I3UnjtlkRhLAsItpLhZ3Vp21Rc2k",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "jwt_token",
+      "value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXUyJ9.eyJpYXQiOjE1Mjc3MDk4MjIsImp0aSI6IkxmTlFVK0F1RDBBdGZIWHVzd2tEdEIwSGRWNGN3L292d0krU0Q2WTJMc1E9IiwiaXNzIjoiZW5naWUtb3JjYW1lbnRvIiwibmJmIjoxNTI3NzA5ODMyLCJleHAiOjE1Mjc3MDk4OTIsImRhdGEiOnsiaWQiOjMsInVzZXJuYW1lIjoiZ2VyZW50ZUBkemlndWFsLmNvbS5iciIsIm5hbWUiOiJnZXJlbnRlIiwicGhvbmUiOiIwNDg5OTk2MTIwNTUiLCJjb21wYW55IjpudWxsLCJsYW5nIjpudWxsLCJyb2xlcyI6W3siaWQiOjMsIm5hbWUiOiJnZXJlbnRlIiwicGl2b3QiOnsidXNlcl9pZCI6Mywicm9sZV9pZCI6M319XX19.LbdfzH2jW4tkgzNLEw-XybwZkcaVmBCom7OzFapIsCCmaxxmxNamV4twdgdhu49euMGCh1X4hShhP3mOIbbxcmJpb8D_bXcwf2spnw-p7XeRsBbXz8b7AnP9Gvy0fqPpaZ3Cf_c_8LoprFZ4XzSvmHkPPFEKOFMLbDa9loXiTMzAMiAvhVGBLj_F7f03jA8sGR7JbUqgOEXvBmFjkuPz5sT1-lsEMONSkl3hUrmm5dIddWotrcOEf30DZ42J54SAjpKtSBoPL-M8wM9qzkczdqlBwa7kyzI6gab4N4FH9xJTa2NnrKxypTdrU3M8UujFpthF5o1XNSIRfZaACw6zAFSnY6DmHzmpN4ssrdQUl-r3H2O_lYeM4PBoUMq2eEtreDEOxNWiOki61khUmV7deUQRRfrxFMCTWQOtUylAdANrzfHTeb8Furm_7nfm6Dh4wdB4MepN8x367JGN4her62fH9GBCT_D2kJ90CieB03m3qgo7EKJrzJUsxl-gF1q9-PeOGuVDm4pzCCQxX5-u0VIVLV49MSX3oXxbEMVew5rxUE_ohtX39neJ75WJPP_k_GFDYfzq79CdezR8f_l9tpHpSvb71K8wRg74jFti4ACqHE7oFJOxwd4YNdiwOHWh3_c0gmeZZGzXhOL_Q_mMZwL12OcEEwVPaocpLxNwA-s",
+      "enabled": true,
+      "type": "text"
+    },
+    {
+      "key": "proposal_id",
+      "value": "2",
+      "enabled": false,
+      "type": "text"
+    }
+  ],
+  "_postman_variable_scope": "environment",
+  "_postman_exported_at": "2018-06-01T04:14:18.411Z",
+  "_postman_exported_using": "Postman/6.1.3"
+}

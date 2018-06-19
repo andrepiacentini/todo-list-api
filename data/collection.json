@@ -1,0 +1,73 @@
+{
+	"info": {
+		"_postman_id": "5990573a-beea-4a66-8f2a-d2354c82da68",
+		"name": "Boilerplate API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Hello world, estou vivo!",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{api}}/",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Autenticar",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"username\" : \"teste@andrepiacentini.com.br\",\n\t\"password\" : \"secret123\",\n\t\"lang\"\t\t: {\n\t\t\"code\" : \"pt-br\"\n\t},\n\t\"force\" : true\n}"
+				},
+				"url": {
+					"raw": "{{api}}/authenticate/authenticate",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"authenticate",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Retorna dados usuário logado",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "{{api}}/authenticate/getTokenContent",
+					"host": [
+						"{{api}}"
+					],
+					"path": [
+						"authenticate",
+						"getTokenContent"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
