@@ -1,0 +1,23 @@
+{
+    "name": "andrepiacentini/skeleton-api",
+    "description": "Boiler Plate API in ZF2",
+    "keywords": [
+        "framework",
+        "zf2",
+        "api"
+    ],
+    "homepage": "http://framework.zend.com/",
+    "require": {
+        "php": ">=7.1",
+        "zendframework/zendframework": "2.*",
+        "zendframework/zftool": "dev-master",
+        "zf-commons/zfc-user": "dev-master",
+        "illuminate/database": "^5.3",
+        "kalnoy/nestedset": "^4.2.3",
+        "robmorgan/phinx": "^0.7.0",
+        "ircmaxell/random-lib": "^1.2",
+        "namshi/jose": "^7.2"
+    },
+    "repositories": [
+    ]
+}
