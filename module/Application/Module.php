@@ -12,6 +12,7 @@ namespace Application;
 use Application\Controller\IndexController;
 use Application\Model\Api;
 use Application\Model\Security;
+use Application\Model\ServiceManager;
 use Zend\Json\Json;
 use Zend\Log\Logger;
 use Zend\Log\Writer\Stream;
@@ -26,10 +27,12 @@ class Module
     public function onBootstrap(MvcEvent $e)
     {
         $eventManager        = $e->getApplication()->getEventManager();
+        $sm = $e->getApplication()->getServiceManager();
         $moduleRouteListener = new ModuleRouteListener();
         $moduleRouteListener->attach($eventManager);
-        // when errors occurs
-        $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onErrorOccurs'));
+        $config = $sm->get("config");
+        // when errors occurs (production only)
+        if (isset($config["environment"]) && ($config["environment"]=="production")) $eventManager->attach(MvcEvent::EVENT_DISPATCH_ERROR, array($this, 'onErrorOccurs'));
     }
 
     public function getConfig()

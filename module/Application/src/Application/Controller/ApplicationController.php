@@ -79,10 +79,10 @@ abstract class ApplicationController extends AbstractActionController
                 return $this->returnData(['status' => 401, 'data' => ['message' => 'not authorized. Is session expired?']]);
 
             // check main controller
-            $returnedValue = $this->checkControllerChange($e);
-            if ($returnedValue!==false) {
-                return $returnedValue;
-            }
+//            $returnedValue = $this->checkControllerChange($e);
+//            if ($returnedValue!==false) {
+//                return $returnedValue;
+//            }
 
             // check modules authorizations
             $wic = $this->params('controller') . '\\' . $this->params('action'); // who is calling?
@@ -106,6 +106,8 @@ abstract class ApplicationController extends AbstractActionController
         $this->updateLoginSession();
         return parent::onDispatch($e);
     }
+
+
 
 
     /* Função que instancia objetos comuns utilizados pelo objeto atual */
@@ -176,19 +178,6 @@ abstract class ApplicationController extends AbstractActionController
     }
 
 
-    protected function returnData(array $data) {
-        $this->response->getHeaders()->addHeaderLine( 'Content-Type', 'application/json' );
-        $this->response->getHeaders()->addHeaderLine( 'Status', $data["status"] );
-        $this->response->setStatusCode($data["status"]);
-        //if ( !$this->params()->fromQuery('debug') ) {
-        //    if (isset($data['data']['raw'])) unset($data['data']['raw']);
-        //}
-
-        $this->response->setContent(\Zend\Json\Json::encode(isset($data['data']) ? $data['data'] : ['fatal_error' => 'problems with the return format']));
-        return $this->response;
-    }
-
-
     protected function checkMethod($method) {
         $request = $this->getRequest();
 
@@ -212,18 +201,6 @@ abstract class ApplicationController extends AbstractActionController
 
     protected function checkContent() {
         if (empty($this->getRequest()->getContent())) return $this->returnData(["status" => 400, "data" => ["message" => "missing object json"]]);
-    }
-
-    protected function returnExcel(array $data, $filename = 'data') {
-        $this->response->getHeaders()->addHeaders(array(
-            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'Content-Disposition' => 'attachment;filename="'. $filename .'xlsx"',
-            'Cache-Control' => 'max-age=0',
-        ));
-        $this->response->setStatusCode($data['status']);
-
-        $this->response->setContent($data['excelOutput']);
-        return $this->response;
     }
 
     /**
@@ -261,6 +238,32 @@ abstract class ApplicationController extends AbstractActionController
         unset($data['password']);
 
         return true;
+    }
+
+
+    protected function returnData(array $data) {
+        $this->response->getHeaders()->addHeaderLine( 'Content-Type', 'application/json' );
+        $this->response->getHeaders()->addHeaderLine( 'Status', $data["status"] );
+        $this->response->setStatusCode($data["status"]);
+        //if ( !$this->params()->fromQuery('debug') ) {
+        //    if (isset($data['data']['raw'])) unset($data['data']['raw']);
+        //}
+
+        $this->response->setContent(\Zend\Json\Json::encode(isset($data['data']) ? $data['data'] : ['fatal_error' => 'problems with the return format']));
+        return $this->response;
+    }
+
+
+    protected function returnExcel(array $data, $filename = 'data') {
+        $this->response->getHeaders()->addHeaders(array(
+            'Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+            'Content-Disposition' => 'attachment;filename="'. $filename .'xlsx"',
+            'Cache-Control' => 'max-age=0',
+        ));
+        $this->response->setStatusCode($data['status']);
+
+        $this->response->setContent($data['excelOutput']);
+        return $this->response;
     }
 
     protected function returnHtml(array $data) {
