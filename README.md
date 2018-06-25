@@ -17,6 +17,8 @@ composer install
 Criar arquivo `local.php` em `/config/autoload` seguindo a estrura abaixo:
 ```php
 <?php
+error_reporting(E_ALL & ~ E_DEPRECATED & ~ E_USER_DEPRECATED  & ~ E_STRICT);
+
 return array(
     'db' => array(
         'username' => 'root',
