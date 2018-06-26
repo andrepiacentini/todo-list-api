@@ -38,7 +38,7 @@
     			'post_data'     => $sStringPost
 			];
 			
-			$oMapper = new SecurityMapper($this->oServiceManager);
+			$oMapper = new SecurityMapper($this->service_manager);
 //			$iIdRegistro = $this->oSecurityDB->insereDadosLog(,,,,,,);
 			return $iIdRegistro;
 		}

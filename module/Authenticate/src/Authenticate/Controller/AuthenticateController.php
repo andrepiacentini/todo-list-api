@@ -180,7 +180,7 @@ class AuthenticateController extends ApplicationController
                             break;
         }
 
-        $mail->setServiceManager($this->oServiceManager);
+        $mail->setServiceManager($this->service_manager);
         $mail->setTo(array(
             'email' => $user->username,
             'name' => $user->name

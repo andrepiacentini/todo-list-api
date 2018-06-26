@@ -1,21 +1,13 @@
 <?php
 namespace Application\Controller;
 
-use Application\Model\AreaPermission;
-use Application\Model\LoginBlacklist;
 use Application\Model\User;
 use Application\Traits\ObjectOperations;
 use Application\Traits\ReturnFormat;
 use Application\Traits\SecurityCheck;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\View\Console\ViewManager;
-use Zend\Session\Container;
-use Zend\Session\SaveHandler\DbTableGateway;
-use Zend\Session\SaveHandler\DbTableGatewayOptions;
-use Zend\Db\TableGateway\TableGateway;
-use Namshi\JOSE\SimpleJWS;
-use Zend\Validator\Identical;
 use Zend\Http\PhpEnvironment\Request as Request;
+use Zend\ServiceManager\ServiceManager;
 
 
 abstract class ApplicationController extends AbstractActionController
@@ -29,8 +21,7 @@ abstract class ApplicationController extends AbstractActionController
 
     protected $config;
     protected $server;
-    protected $oServiceManager;
-    protected $oSessionManager;
+    protected $service_manager;
     protected $oContainer;
     protected $oSecurity;
     protected $oRenderer;
@@ -44,14 +35,14 @@ abstract class ApplicationController extends AbstractActionController
     protected $jwt;
 
 
-    public function __construct($serviceManager)
+    public function __construct(ServiceManager $serviceManager)
     {
         $this->cert_private = 'file://' . realpath($this->cert_private);
         $this->cert_public = 'file://' . realpath($this->cert_public);
-        $this->oServiceManager = $serviceManager;
-        $this->config = $this->oServiceManager->get("config");
-        $this->oSecurity = $this->oServiceManager->get('Application\Security');
-        $this->oRenderer = $this->oServiceManager->get('Zend\View\Renderer\RendererInterface');
+        $this->service_manager = $serviceManager;
+        $this->config = $this->service_manager->get("config");
+        $this->oSecurity = $this->service_manager->get('Application\Security');
+        $this->oRenderer = $this->service_manager->get('Zend\View\Renderer\RendererInterface');
         $this->bypass_routes = array_map('strtolower', $this->bypass_routes);
     }
 
@@ -168,7 +159,6 @@ abstract class ApplicationController extends AbstractActionController
 
         $modelName = $this->getModelName();
 
-        $request = $this->getRequest();
         // Params
         $id = $this->params()->fromQuery('id');
         if ($id && $id > 0) {
@@ -185,7 +175,6 @@ abstract class ApplicationController extends AbstractActionController
 
     public function delete(Request $request) {
         $modelName = $this->getModelName();
-        $request = $this->getRequest();
 
         // Params
         $id = $this->params()->fromRoute('id');
@@ -198,7 +187,6 @@ abstract class ApplicationController extends AbstractActionController
 
     public function put(Request $request) {
         $modelName = $this->getModelName();
-        $request = $this->getRequest();
 
         $id = $this->params()->fromQuery('id');
         if (!$id || $id <= 0) return $this->returnData(["status" => 400, "message" => "Param id must be declared and must be integer"]);
@@ -216,7 +204,6 @@ abstract class ApplicationController extends AbstractActionController
 
     public function post(Request $request) {
         $modelName = $this->getModelName();
-        $request = $this->getRequest();
 
         // Params
         $aData = get_object_vars(json_decode($request->getContent()));

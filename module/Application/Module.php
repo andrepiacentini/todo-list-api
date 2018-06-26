@@ -97,7 +97,7 @@ class Module
                 },
                 'Application\Log' => function ($sm) {
                     $log = new Logger();
-                    $writer = new Stream('data/logs/api.log');
+                    $writer = new Stream('data/logs/api-access.log');
                     $log->addWriter($writer);
 
                     return $log;
