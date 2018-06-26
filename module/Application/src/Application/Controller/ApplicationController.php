@@ -41,6 +41,7 @@ abstract class ApplicationController extends AbstractActionController
 
     protected $user_logged = false;
     protected $uri_route;
+    protected $jwt;
 
 
     public function __construct($serviceManager)
@@ -49,15 +50,8 @@ abstract class ApplicationController extends AbstractActionController
         $this->cert_public = 'file://' . realpath($this->cert_public);
         $this->oServiceManager = $serviceManager;
         $this->config = $this->oServiceManager->get("config");
-        // Session in DB
-        $tableGateway = new TableGateway('session', $this->oServiceManager->get('Zend\Db\Adapter\Adapter'));
-        $saveHandler = new DbTableGateway($tableGateway, new DbTableGatewayOptions());
-        $this->oSessionManager = $this->oServiceManager->get('Zend\Session\SessionManager');
-        $this->oSessionManager->setSaveHandler($saveHandler);
-        $this->oContainer = new Container("skt", $this->oSessionManager);
         $this->oSecurity = $this->oServiceManager->get('Application\Security');
         $this->oRenderer = $this->oServiceManager->get('Zend\View\Renderer\RendererInterface');
-
         $this->bypass_routes = array_map('strtolower', $this->bypass_routes);
     }
 
@@ -76,7 +70,8 @@ abstract class ApplicationController extends AbstractActionController
                 $value = $request->getHeaders('authorization')->getFieldValue();
                 if (mb_strtolower(substr($value, 0, 6))!=='bearer') return $this->returnData(['status' => 406, 'data' => ['message' => 'authentication header must be bearer']]);
                 $temp = explode(" ",$value);
-                $this->oContainer->api_secret = $temp[1];
+//                $this->oContainer->api_secret = $temp[1];
+                $this->jwt = $temp[1];
             }
             // check user authorizations
             if (!$this->authorize())

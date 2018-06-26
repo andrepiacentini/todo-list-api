@@ -23,17 +23,17 @@ trait SecurityCheck {
     protected function isUserAccessAuthorized() {
         $user = new User();
         $user->setCertificates($this->cert_private,$this->cert_public);
-        $this->user_logged = ($user->isAuthorized($this->oContainer->api_secret)) ? $user : null;
+        $this->user_logged = ($user->isAuthorized($this->jwt)) ? $user : null;
         if (!$this->user_logged) return false;
         // Testa se o token expirou
-        if (!LoginBlacklist::isJWTActive($this->oContainer->api_secret)) return false;
-        $this->user_logged->fill($this->user_logged->getJWTPayload($this->oContainer->api_secret)['data']);
+        if (!LoginBlacklist::isJWTActive($this->jwt)) return false;
+        $this->user_logged->fill($this->user_logged->getJWTPayload($this->jwt)['data']);
         return true;
     }
 
     protected function updateLoginSession() {
         if ($this->user_logged) {
-            $this->user_logged->updateLoginSessionDate($this->oContainer->api_secret);
+            $this->user_logged->updateLoginSessionDate($this->jwt);
         }
     }
 

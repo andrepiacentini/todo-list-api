@@ -95,9 +95,9 @@ class AuthenticateController extends ApplicationController
 
         $user->setCertificates($this->cert_private, $this->cert_public);
         $jwt_string = $user->setJWT($payload);
-        $this->oContainer->api_secret = $jwt_string;
+        $this->jwt = $jwt_string;
         // registra na blacklist
-        $user->setLoginBlacklist($this->oContainer->api_secret);
+        $user->setLoginBlacklist($this->jwt);
 
         return $this->returnData(['status' => 200, 'data' => ['jwt_token' => $jwt_string]]);
     }
@@ -116,7 +116,7 @@ class AuthenticateController extends ApplicationController
     public function getTokenContentAction() {
         if (($return = $this->checkMethod('get')) !== NULL) return $return;
 
-        if (!isset($this->oContainer->api_secret))
+        if (!isset($this->jwt))
             return $this->returnData(['status' => 401, 'data' => ['message' => 'unauthorized. Token not found.']]);
 
         $user = $this->getUserLogged();
@@ -124,7 +124,7 @@ class AuthenticateController extends ApplicationController
         if (!$user instanceof User) return $this->returnData(['status' => 401, 'data'   => ['message' => 'unauthorized. The jwt token is not valid.']]);
 
         $userMoreData = User::find($this->getUserLogged()->id);
-        $payloadData = $user->getJWTPayload($this->oContainer->api_secret)['data'];
+        $payloadData = $user->getJWTPayload($this->jwt)['data'];
         $payloadData['image']=$userMoreData->image;
         return $this->returnData([ 'status' => 200, 'data' => ['payload' => $payloadData ] ]);
 
