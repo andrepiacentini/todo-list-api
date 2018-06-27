@@ -85,6 +85,7 @@ trait ReturnFormat {
         if ( !$this->params()->fromQuery('debug') ) {
             if (isset($data['data']['raw'])) unset($data['data']['raw']);
         }
+        return $data;
     }
 
 }

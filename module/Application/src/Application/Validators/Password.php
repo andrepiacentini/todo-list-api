@@ -31,11 +31,6 @@ class Password extends AbstractValidator
             $isValid = false;
         }
 
-//        if (!preg_match('/[A-Z]/', $value)) {
-//            $this->error(self::UPPER);
-//            $isValid = false;
-//        }
-
         if (!preg_match('/[a-z]/', $value)) {
             $this->error(self::LOWER);
             $isValid = false;

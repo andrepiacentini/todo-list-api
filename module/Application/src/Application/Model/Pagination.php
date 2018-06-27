@@ -1,13 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: murilo
- * Date: 3/28/17
- * Time: 4:53 PM
- */
-
 namespace Application\Model;
-
 
 use Illuminate\Database\Query\Builder;
 use Symfony\Component\Config\Definition\Exception\Exception;

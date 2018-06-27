@@ -13,39 +13,6 @@
 		}
 		
 
-		
-		/* Registra dados no log */
-		public function registraLog($sModuloOrigem,$sDescricao) {
-			// Teve dados de POST?
-			$sStringPost = "";
-			if (isset($_POST)) {
-				if (count($_POST)>0) {
-					$aKeys = array_keys($_POST);
-					for ($i=0;$i<count($aKeys);$i++) {
-						$sStringPost .= $aKeys[$i]."=".$_POST[$aKeys[$i]]."&";
-					}
-				}
-			}
-
-			$aColumns = [
-    			'id'            => null,
-    			'id_user'       => $this->umContainer->iIdUsuarioSiteLogado,
-    			'source'        => $sModuloOrigem,
-    			'description'   => $sDescricao,
-    			'url'           => $_SERVER["REMOTE_ADDR"],
-    			'register_date' => date("Y-m-d H:i:s"),
-    			'ip'            => $_SERVER["REQUEST_URI"],
-    			'post_data'     => $sStringPost
-			];
-			
-			$oMapper = new SecurityMapper($this->oServiceManager);
-//			$iIdRegistro = $this->oSecurityDB->insereDadosLog(,,,,,,);
-			return $iIdRegistro;
-		}
-		
-	
-	
-	
 	
     	/**
     	 * returnHeaderCode function.

@@ -12,14 +12,10 @@ namespace Application;
 use Application\Controller\IndexController;
 use Application\Model\Api;
 use Application\Model\Security;
-use Application\Model\ServiceManager;
-use Zend\Json\Json;
 use Zend\Log\Logger;
 use Zend\Log\Writer\Stream;
 use Zend\Mvc\ModuleRouteListener;
 use Zend\Mvc\MvcEvent;
-use Zend\Session\SessionManager;
-use Zend\Session\Container;
 use Zend\View\Model\JsonModel;
 
 class Module
@@ -54,52 +50,13 @@ class Module
     public function getServiceConfig()
     {
         return array(
-            'factories' => array(
-                'Zend\Session\SessionManager' => function ($sm) {
-                    $config = $sm->get('config');
-                    if (isset($config['session'])) {
-                        $session = $config['session'];
-    
-                        $sessionConfig = null;
-                        if (isset($session['skt'])) {
-                            $class = isset($session['config']['class'])  ? $session['config']['class'] : 'Zend\Session\Config\SessionConfig';
-                            $options = isset($session['config']['options']) ? $session['config']['options'] : array();
-                            $sessionConfig = new $class();
-                            $sessionConfig->setOptions($options);
-                        }
-    
-                        $sessionStorage = null;
-                        if (isset($session['storage'])) {
-                            $class = $session['storage'];
-                            $sessionStorage = new $class();
-                        }
-    
-                        $sessionSaveHandler = null;
-                        if (isset($session['save_handler'])) {
-                            // class should be fetched from service manager since it will require constructor arguments
-                            $sessionSaveHandler = $sm->get($session['save_handler']);
-                        }
-    
-                        $sessionManager = new SessionManager($sessionConfig, $sessionStorage, $sessionSaveHandler);
-                        if (isset($session['validators'])) {
-                            $chain = $sessionManager->getValidatorChain();
-                            foreach ($session['validators'] as $validator) {
-                                $validator = new $validator();
-                                $chain->attach('session.validate', array($validator, 'isValid'));
-    
-                            }
-                        }
-                    } else {
-                        $sessionManager = new SessionManager();
-                    }
-                    Container::setDefaultManager($sessionManager);
-                    return $sessionManager;
-                },
-                'Application\Log' => function ($sm) {
+            'factories' => [
+                'Application\Log' => function () {
                     $log = new Logger();
-                    $writer = new Stream('data/logs/api.log');
+                    if (!file_exists("data")) mkdir("data");
+                    if (!file_exists("data/logs")) mkdir("data/logs");
+                    $writer = new Stream('data/logs/api-access_'. date("Ymd").'.log');
                     $log->addWriter($writer);
-
                     return $log;
                 },
                 'Application\Security' => function ($sm) {
@@ -108,7 +65,7 @@ class Module
                 'Application\Api' => function ($sm) {
                     return new Api($sm);
                 },
-            ),
+            ],
         );
     }
 

@@ -68,7 +68,7 @@ class Authenticable extends Model
         $public_key = openssl_pkey_get_public($cert);
         if (($jws->isValid($public_key)) || (1 == 1)) { // TODO: forçando a validação, mesmo falhando devido ao bug do mexicano
             $payload = $jws->getPayload();
-            // TODO: testar propriedades do payload (iat, jti, iss, nbf, exp) antes de entregar o payload
+            // TODO: testar propriedades do payload (iat, jti, iss, nbf, exp) antes de entregar o mesmo
             return $payload;
         } else {
             return false;

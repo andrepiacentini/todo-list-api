@@ -39,20 +39,20 @@ class AuthenticateController extends ApplicationController
                 'data' => ['message'=>'password is not valid', 'validator' => $validatorPassword->getMessages()]
             ]);
 
-        // Indica que irá ignorar se o usuário já está logado em outra session (destroi sessions ativas do usuário)
+        // if force is true, all user session will be destroy
         $force = (isset($post_data["force"]) && ($post_data["force"]=='true')) ? true : false;
 
-        // verifica se o username é de algum usuário
+        // is username belongs any user?
         $user = User::isAuthenticable($post_data["username"]);
 
         if (!$user)
             return $this->returnData(['status' => 401, 'data' => ['message' => 'username is not authenticable.']]);
 
-        // Valida o login (username é valido)
+        // validate login
         if (!$user->isLoginValid($post_data['username'], $post_data['password']))
             return $this->returnData(['status' => 401, 'data' => ['message' => 'username or password is not valid.']]);
 
-        // checa blacklist
+        // check blacklist
         $options = [
             'expires'   => '1 day',
             'force'     => $force,
@@ -61,15 +61,14 @@ class AuthenticateController extends ApplicationController
         if ($user->hasMultiplesLogins($options))
             return $this->returnData(['status' => 401, 'data' => ['message' => 'multiples logins detected.']]);
 
-        // Usuário está bloqueado (nivel banco)
+        // is user blocked?
         if (!$user->is_active)
             return $this->returnData(['status' => 401, 'data' => ['message' => 'username or password is not valid.']]);
 
-        // seta o idioma do usuário
-        $user->language = $post_data['lang']->code;
+        // user language. If not set, use browser's default language
+        $user->language = (isset($post_data['lang']->code)) ? $post_data['lang']->code : $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 
-        // sucesso. Cria JWT
-        // payload
+        // JWT payload
         $tokenId    = base64_encode(openssl_random_pseudo_bytes(32));
         $issuedAt   = time();
         $notBefore  = $issuedAt + 10;             //Adding 10 seconds
@@ -95,9 +94,9 @@ class AuthenticateController extends ApplicationController
 
         $user->setCertificates($this->cert_private, $this->cert_public);
         $jwt_string = $user->setJWT($payload);
-        $this->oContainer->api_secret = $jwt_string;
+        $this->jwt = $jwt_string;
         // registra na blacklist
-        $user->setLoginBlacklist($this->oContainer->api_secret);
+        $user->setLoginBlacklist($this->jwt);
 
         return $this->returnData(['status' => 200, 'data' => ['jwt_token' => $jwt_string]]);
     }
@@ -116,7 +115,7 @@ class AuthenticateController extends ApplicationController
     public function getTokenContentAction() {
         if (($return = $this->checkMethod('get')) !== NULL) return $return;
 
-        if (!isset($this->oContainer->api_secret))
+        if (!isset($this->jwt))
             return $this->returnData(['status' => 401, 'data' => ['message' => 'unauthorized. Token not found.']]);
 
         $user = $this->getUserLogged();
@@ -124,7 +123,7 @@ class AuthenticateController extends ApplicationController
         if (!$user instanceof User) return $this->returnData(['status' => 401, 'data'   => ['message' => 'unauthorized. The jwt token is not valid.']]);
 
         $userMoreData = User::find($this->getUserLogged()->id);
-        $payloadData = $user->getJWTPayload($this->oContainer->api_secret)['data'];
+        $payloadData = $user->getJWTPayload($this->jwt)['data'];
         $payloadData['image']=$userMoreData->image;
         return $this->returnData([ 'status' => 200, 'data' => ['payload' => $payloadData ] ]);
 
@@ -180,7 +179,7 @@ class AuthenticateController extends ApplicationController
                             break;
         }
 
-        $mail->setServiceManager($this->oServiceManager);
+        $mail->setServiceManager($this->service_manager);
         $mail->setTo(array(
             'email' => $user->username,
             'name' => $user->name

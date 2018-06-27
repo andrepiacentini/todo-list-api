@@ -32,25 +32,6 @@ return array(
     'view_manager' => array(
         'base_path' => '/'
     ),
-    /* Configuração de sessão */
-    'session' => array(
-        'config' => array(
-            'class' => 'Zend\Session\Config\SessionConfig',
-            'options' => array(
-                'name' => 'skt',
-                'use_cookies' => true,
-                'cache_expire' => 60 * 60 * 24 * 30 * 12,
-                'cookie_httponly' => true,
-                'cookie_lifetime' => 60 * 60 * 24 * 30 * 12,
-            ),
-        ),
-        'storage' => 'Zend\Session\Storage\SessionArrayStorage',
-        'validators' => array(
-            'Zend\Session\Validator\RemoteAddr',
-            'Zend\Session\Validator\HttpUserAgent',
-        ),
-        'expira-tela' => 60 * 60,
-    ),
     'mensagens' => array(
         'invalido' => 'Usuário ou senha incorretos',
         'form-invalido' => 'Preencha corretamente o formulário de login',
@@ -67,7 +48,7 @@ return array(
         'ssl'=> 'tls',
     ),
     'path_logico' => '',
-    'version' => '0.0.1',
+    'version' => '1.0.0',
     'security' => array(
         'server' => 'tasklist-api'
     ),

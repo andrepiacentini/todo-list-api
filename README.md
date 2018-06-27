@@ -82,5 +82,3 @@ php -S localhost:<PORTA> public/index.php
 
 Alguns itens já identificados e que podem ser melhorados em uma próxima versão para otimizar código:
 - Uso de Validators nos métodos de verbo (get, post, put, del), reduzindo a complexidade e limpando o código;
-- Uso de JWT puro eliminando a utilização do Container() no ZF2;
-- Simplificação da classe ApplicationController(), separando os métodos que lidam com segurança e com os verbos;

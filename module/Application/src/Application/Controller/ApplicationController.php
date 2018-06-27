@@ -1,27 +1,19 @@
 <?php
 namespace Application\Controller;
 
-use Application\Model\AreaPermission;
-use Application\Model\LoginBlacklist;
 use Application\Model\User;
+use Application\Traits\Log;
 use Application\Traits\ObjectOperations;
 use Application\Traits\ReturnFormat;
 use Application\Traits\SecurityCheck;
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\Mvc\View\Console\ViewManager;
-use Zend\Session\Container;
-use Zend\Session\SaveHandler\DbTableGateway;
-use Zend\Session\SaveHandler\DbTableGatewayOptions;
-use Zend\Db\TableGateway\TableGateway;
-use Namshi\JOSE\SimpleJWS;
-use Zend\Validator\Identical;
 use Zend\Http\PhpEnvironment\Request as Request;
+use Zend\ServiceManager\ServiceManager;
 
 
 abstract class ApplicationController extends AbstractActionController
 {
-
-    use SecurityCheck, ReturnFormat, ObjectOperations;
+    use SecurityCheck, ReturnFormat, ObjectOperations, Log;
 
     protected $allowed_routes;
     protected $bypass_routes = [];
@@ -29,11 +21,10 @@ abstract class ApplicationController extends AbstractActionController
 
     protected $config;
     protected $server;
-    protected $oServiceManager;
-    protected $oSessionManager;
+    protected $service_manager;
     protected $oContainer;
-    protected $oSecurity;
-    protected $oRenderer;
+    protected $security;
+    protected $renderer;
     protected $translator;
 
     protected $cert_private = 'data/jwtRS256.key';
@@ -41,23 +32,17 @@ abstract class ApplicationController extends AbstractActionController
 
     protected $user_logged = false;
     protected $uri_route;
+    protected $jwt;
 
 
-    public function __construct($serviceManager)
+    public function __construct(ServiceManager $serviceManager)
     {
         $this->cert_private = 'file://' . realpath($this->cert_private);
         $this->cert_public = 'file://' . realpath($this->cert_public);
-        $this->oServiceManager = $serviceManager;
-        $this->config = $this->oServiceManager->get("config");
-        // Session in DB
-        $tableGateway = new TableGateway('session', $this->oServiceManager->get('Zend\Db\Adapter\Adapter'));
-        $saveHandler = new DbTableGateway($tableGateway, new DbTableGatewayOptions());
-        $this->oSessionManager = $this->oServiceManager->get('Zend\Session\SessionManager');
-        $this->oSessionManager->setSaveHandler($saveHandler);
-        $this->oContainer = new Container("skt", $this->oSessionManager);
-        $this->oSecurity = $this->oServiceManager->get('Application\Security');
-        $this->oRenderer = $this->oServiceManager->get('Zend\View\Renderer\RendererInterface');
-
+        $this->service_manager = new \Application\Model\ServiceManager($serviceManager);
+        $this->config = $this->service_manager->get("config");
+        $this->security = $this->service_manager->get('Application\Security');
+        $this->renderer = $this->service_manager->get('Zend\View\Renderer\RendererInterface');
         $this->bypass_routes = array_map('strtolower', $this->bypass_routes);
     }
 
@@ -69,28 +54,26 @@ abstract class ApplicationController extends AbstractActionController
         }
         $this->uri_route = strtolower(explode('?', rtrim(str_replace(['/index'], [''], $_SERVER["REQUEST_URI"]), '/'), 2)[0]); // TODO: isso precisa ser melhorado
 
-        // a uri precisa ser testada devido a questões de segurança?
+        self::registerInLog("access API route " . $this->uri_route);
+
+        // the uri needs to be tested?
         if (!in_array($this->uri_route,$this->bypass_routes)) {
-            // header authorization está sendo passado?
+            // header authorization exists?
             if  ( ($request->getHeaders('authorization')!==null) && ($request->getHeaders('authorization')!==false) ) {
                 $value = $request->getHeaders('authorization')->getFieldValue();
                 if (mb_strtolower(substr($value, 0, 6))!=='bearer') return $this->returnData(['status' => 406, 'data' => ['message' => 'authentication header must be bearer']]);
                 $temp = explode(" ",$value);
-                $this->oContainer->api_secret = $temp[1];
+                $this->jwt = $temp[1];
             }
             // check user authorizations
-            if (!$this->authorize())
+            if (!$this->authorize()) {
+                self::registerInLog("api access not authorized");
                 return $this->returnData(['status' => 401, 'data' => ['message' => 'not authorized. Is session expired?']]);
-
-            // check main controller
-//            $returnedValue = $this->checkControllerChange($e);
-//            if ($returnedValue!==false) {
-//                return $returnedValue;
-//            }
+            }
 
             // check modules authorizations
             $wic = $this->params('controller') . '\\' . $this->params('action'); // who is calling?
-            // sanitize wic (remove ultimo parametro se for numero e remonta o router)
+            // sanitize wic (removing last param if is a number)
             $last_slash = strrpos($wic,"\\");
             if ($last_slash!==false) {
                 $last_parameter = substr($wic,$last_slash+1);
@@ -103,6 +86,7 @@ abstract class ApplicationController extends AbstractActionController
                 }
             }
             if (!$this->hasAreaAccess($wic)) {
+                self::registerInLog("api access not authorized" . $this->uri_route,["info" => "You cannot access this system area. [TIP: add \'".$wic."\' in AreaPermission Class, property \$area_actions"]);
                 return $this->returnData(['status' => 401, 'data' => ['message' => 'not authorized. You cannot access this system area. [TIP: add \''.$wic.'\' in AreaPermission Class, property $area_actions]']]);
             }
         }
@@ -114,7 +98,7 @@ abstract class ApplicationController extends AbstractActionController
 
 
 
-    /* Função que instancia objetos comuns utilizados pelo objeto atual */
+    // startup function
     protected function init()
     {
     }
@@ -173,7 +157,6 @@ abstract class ApplicationController extends AbstractActionController
 
         $modelName = $this->getModelName();
 
-        $request = $this->getRequest();
         // Params
         $id = $this->params()->fromQuery('id');
         if ($id && $id > 0) {
@@ -190,7 +173,6 @@ abstract class ApplicationController extends AbstractActionController
 
     public function delete(Request $request) {
         $modelName = $this->getModelName();
-        $request = $this->getRequest();
 
         // Params
         $id = $this->params()->fromRoute('id');
@@ -203,7 +185,6 @@ abstract class ApplicationController extends AbstractActionController
 
     public function put(Request $request) {
         $modelName = $this->getModelName();
-        $request = $this->getRequest();
 
         $id = $this->params()->fromQuery('id');
         if (!$id || $id <= 0) return $this->returnData(["status" => 400, "message" => "Param id must be declared and must be integer"]);
@@ -221,7 +202,6 @@ abstract class ApplicationController extends AbstractActionController
 
     public function post(Request $request) {
         $modelName = $this->getModelName();
-        $request = $this->getRequest();
 
         // Params
         $aData = get_object_vars(json_decode($request->getContent()));

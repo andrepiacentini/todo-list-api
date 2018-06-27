@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class AreaPermission extends Model
 {
-    const AREA_ADMINISTRADOR = 'administrador';
-    const AREA_USUARIO = 'usuario';
+    const AREA_ADMINISTRATOR = 'administrador';
+    const AREA_USER = 'usuario';
     const ALWAYS_HAVE_ACCESS = 'always-have';
 
     protected $table = 'area_permission';
@@ -16,19 +16,11 @@ class AreaPermission extends Model
     protected $fillable = ['user_id', 'area'];
 
     protected $areas_actions = [
-        self::AREA_ADMINISTRADOR => [
+        self::AREA_ADMINISTRATOR => [
             'Application\\Controller\\Index\\index',
-            'Tasklist\\Controller\\Tasklist\\index',
-            'Tasklist\\Controller\\Task\\index',
-            'Tasklist\\Controller\\Task',
-            'Tasklist\\Controller\\Tasklist'
         ],
-        self::AREA_USUARIO => [
+        self::AREA_USER => [
             'Application\\Controller\\Index\\index',
-            'Tasklist\\Controller\\Tasklist\\index',
-            'Tasklist\\Controller\\Task\\index',
-            'Tasklist\\Controller\\Task',
-            'Tasklist\\Controller\\Tasklist'
         ],
         self::ALWAYS_HAVE_ACCESS  => [
             'Authenticate\\Controller\\Authenticate\\getTokenContent',

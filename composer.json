@@ -6,6 +6,9 @@
         "zf2",
         "api"
     ],
+    "config": {
+        "optimize-autoloader": true
+    },
     "homepage": "https://andrepiacentini.com.br/boilerplate-api",
     "require": {
         "php": ">=7.1",
@@ -16,7 +19,8 @@
         "kalnoy/nestedset": "^4.2.3",
         "robmorgan/phinx": "^0.7.0",
         "ircmaxell/random-lib": "^1.2",
-        "namshi/jose": "^7.2"
+        "namshi/jose": "^7.2",
+        "ocramius/package-versions": "^1.3"
     },
     "repositories": [
     ]
