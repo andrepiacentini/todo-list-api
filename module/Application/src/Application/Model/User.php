@@ -60,7 +60,6 @@ class User extends Authenticable
 
     public function setPasswordAttribute($value) {
         if ($value!="") {
-            //TODO temporarily removed validation
             $validator = new \Application\Validators\Password();
             if ($validator->isValid($value)) {
                 $bcrypt = new Bcrypt();

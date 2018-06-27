@@ -1,12 +1,6 @@
 <?php
 namespace Application\Model;
 
-use mikehaertl\wkhtmlto\Image;
-use DocRaptor\Configuration;
-use DocRaptor\Doc;
-use DocRaptor\DocApi;
-use DocRaptor\PrinceOptions;
-
 /**
  * Classe para metodos estaticos que podem ser usados por mais de um model
  * @author Murilo

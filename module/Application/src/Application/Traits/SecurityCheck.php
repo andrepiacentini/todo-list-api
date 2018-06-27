@@ -38,30 +38,6 @@ trait SecurityCheck {
     }
 
 
-    /* troca o controller, caso module_name da company esteja preenchido */
-    protected function checkControllerChange(\Zend\Mvc\MvcEvent $e) {
-//        $nameSpaceCompany = $this->user_logged->company->module_name;
-//        if (!is_null($nameSpaceCompany)) {
-//            $routeMatch = $e->getRouteMatch();
-//            $routeParams = $routeMatch->getParams();
-//            $actualController = $routeParams["controller"];
-//            // call
-//            $controller = str_replace(['DAM'],[$nameSpaceCompany],$actualController);
-//            $namespace = str_replace(['DAM'],[$nameSpaceCompany],$routeParams["__NAMESPACE__"]);
-//            $action = $routeParams["action"];
-//            if (strpos($routeParams["__NAMESPACE__"],$namespace)===false) {
-//                return $this->forward()->dispatch($controller, array(
-//                    'controller' => $controller,
-//                    'action' => $action,
-//                    '__NAMESPACE__' => $namespace,
-//                    '__CONTROLLER__' => 'filter',
-//                ));
-//            }
-//        }
-        return false;
-    }
-
-
     protected function checkMethod($method) {
         $request = $this->getRequest();
 

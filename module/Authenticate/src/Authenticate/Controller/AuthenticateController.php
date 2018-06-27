@@ -39,20 +39,20 @@ class AuthenticateController extends ApplicationController
                 'data' => ['message'=>'password is not valid', 'validator' => $validatorPassword->getMessages()]
             ]);
 
-        // Indica que irá ignorar se o usuário já está logado em outra session (destroi sessions ativas do usuário)
+        // if force is true, all user session will be destroy
         $force = (isset($post_data["force"]) && ($post_data["force"]=='true')) ? true : false;
 
-        // verifica se o username é de algum usuário
+        // is username belongs any user?
         $user = User::isAuthenticable($post_data["username"]);
 
         if (!$user)
             return $this->returnData(['status' => 401, 'data' => ['message' => 'username is not authenticable.']]);
 
-        // Valida o login (username é valido)
+        // validate login
         if (!$user->isLoginValid($post_data['username'], $post_data['password']))
             return $this->returnData(['status' => 401, 'data' => ['message' => 'username or password is not valid.']]);
 
-        // checa blacklist
+        // check blacklist
         $options = [
             'expires'   => '1 day',
             'force'     => $force,
@@ -61,15 +61,14 @@ class AuthenticateController extends ApplicationController
         if ($user->hasMultiplesLogins($options))
             return $this->returnData(['status' => 401, 'data' => ['message' => 'multiples logins detected.']]);
 
-        // Usuário está bloqueado (nivel banco)
+        // is user blocked?
         if (!$user->is_active)
             return $this->returnData(['status' => 401, 'data' => ['message' => 'username or password is not valid.']]);
 
-        // seta o idioma do usuário
-        $user->language = $post_data['lang']->code;
+        // user language. If not set, use browser's default language
+        $user->language = (isset($post_data['lang']->code)) ? $post_data['lang']->code : $_SERVER['HTTP_ACCEPT_LANGUAGE'];
 
-        // sucesso. Cria JWT
-        // payload
+        // JWT payload
         $tokenId    = base64_encode(openssl_random_pseudo_bytes(32));
         $issuedAt   = time();
         $notBefore  = $issuedAt + 10;             //Adding 10 seconds
