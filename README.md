@@ -1,8 +1,12 @@
-# Boilerplate API
+# TODO List API
+
+Uma API simples para gerenciamento de tarefas organizadas por usuários.
+
+Esta API foi criada para atender a um teste de desenvolvimento.
 
 ## Requisitos mínimos
 - PHP 7.1+
-- MySQL 5.6+ (5.7)
+- MySQL 5.6+
 - Composer
 
 
@@ -14,7 +18,9 @@ Instale as dependências:
 composer install
 ```
 
-Criar arquivo `local.php` em `/config/autoload` seguindo a estrura abaixo:
+Libere acesso a escrita a pasta `data` para o usuário do seu servidor web ou do proprietário do script PHP
+
+Crie o arquivo `local.php` em `/config/autoload` com as configurações do seu ambiente, seguindo a estrura abaixo:
 ```php
 <?php
 error_reporting(E_ALL & ~ E_DEPRECATED & ~ E_USER_DEPRECATED  & ~ E_STRICT);
@@ -67,13 +73,10 @@ Para popular com dados iniciais a base:
 php vendor/bin/phinx seed:run -e development
 ```
 
-### PHP: extensões necessárias 
-
-- Intl
 
 ## Como iniciar?
 
-Basta abrir um terminal, posicionar até a raiz do projeto (dentro da pasta do projeto) e executar o seguinte comando:
+Basta abrir o terminal, posicionar até a raiz do projeto (dentro da pasta do projeto) e executar o seguinte comando:
 ```bash
 php -S localhost:<PORTA> public/index.php
 ```

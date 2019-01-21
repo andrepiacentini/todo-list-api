@@ -10,7 +10,7 @@ class IndexController extends ApplicationController {
 
     public function get(Request $request) {
         return $this->returnData(['status' => 200,
-                                'data' => ['message' => 'Boiler Plate API v '. $this->config["version"] . ' by André Piacentini']]);
+                                'data' => ['message' => 'TODO List API v '. $this->config["version"] . ' by André Piacentini']]);
     }
 
 }

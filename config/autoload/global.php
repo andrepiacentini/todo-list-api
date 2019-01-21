@@ -15,7 +15,7 @@ return array(
     /* Configuração do dbAdapter */
     'db' => array(
         'driver' => 'PDO',
-        'dsn' => 'mysql:dbname=boilerplate_api;host=localhost;port=3306',
+        'dsn' => 'mysql:dbname=todo_list_api;host=localhost;port=3306',
         'driver_options' => array(
             PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''
         ),
@@ -37,15 +37,6 @@ return array(
         'form-invalido' => 'Preencha corretamente o formulário de login',
         'expirou' => 'Sua sessão expirou. Faça login novamente.',
         'sem-acesso' => 'Sem acesso a esta página. Faça seu login.',
-    ),
-    'smtp' => array(
-        'name'  => 'andrepiacentini.com.br',
-        'host'  => 'email-ssl.com.br',
-        'username' => 'noreply@engie.com.br',
-        'password' => 'R8SxYGPEcAxHS27y',
-        'class' => 'plain',
-        'port'=> '587',
-        'ssl'=> 'tls',
     ),
     'path_logico' => '',
     'version' => '1.0.0',
