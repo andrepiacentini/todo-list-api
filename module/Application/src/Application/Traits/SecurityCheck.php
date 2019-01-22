@@ -6,21 +6,25 @@ use Application\Model\LoginBlacklist;
 use Application\Model\User;
 use Zend\Validator\Identical;
 
-trait SecurityCheck {
+trait SecurityCheck
+{
 
-    protected function authorize() {
+    protected function authorize()
+    {
         if (!in_array($this->uri_route,$this->bypass_routes)) return $this->isUserAccessAuthorized();
         return true;
     }
 
-    protected function hasAreaAccess($wic) {
+    protected function hasAreaAccess($wic)
+    {
         if (!$this->user_logged) return false;
         if (in_array($wic,$this->bypass_area_access)) return true;
         $area_permissions = new AreaPermission();
         return $area_permissions->hasAccess($this->user_logged->id,$wic);
     }
 
-    protected function isUserAccessAuthorized() {
+    protected function isUserAccessAuthorized()
+    {
         $user = new User();
         $user->setCertificates($this->cert_private,$this->cert_public);
         $this->user_logged = ($user->isAuthorized($this->jwt)) ? $user : null;
@@ -31,14 +35,16 @@ trait SecurityCheck {
         return true;
     }
 
-    protected function updateLoginSession() {
+    protected function updateLoginSession()
+    {
         if ($this->user_logged) {
             $this->user_logged->updateLoginSessionDate($this->jwt);
         }
     }
 
 
-    protected function checkMethod($method) {
+    protected function checkMethod($method)
+    {
         $request = $this->getRequest();
 
         if (strtolower($request->getMethod()) == 'options') {
@@ -51,7 +57,8 @@ trait SecurityCheck {
         }
     }
 
-    protected function basicCheck($method) {
+    protected function basicCheck($method)
+    {
         $return = $this->checkMethod($method);
         if (!$return) {
             $return = $this->checkContent();
@@ -59,7 +66,8 @@ trait SecurityCheck {
         return $return;
     }
 
-    protected function checkContent() {
+    protected function checkContent()
+    {
         if (empty($this->getRequest()->getContent())) return $this->returnData(["status" => 400, "data" => ["message" => "missing object json"]]);
     }
 
@@ -70,7 +78,8 @@ trait SecurityCheck {
      * @param bool $unset
      * @return bool
      */
-    protected function checkEqualPassword(&$data) {
+    protected function checkEqualPassword(&$data)
+    {
         if (isset($data['set_password'])) {
             if (!isset($data['password']) || !isset($data['confirm_password'])) {
                 return false;

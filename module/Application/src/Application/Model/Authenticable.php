@@ -20,34 +20,40 @@ class Authenticable extends Model
      * @param string$username
      * @return self|bool
      */
-    public static function isAuthenticable($username) {
+    public static function isAuthenticable($username)
+    {
         $user = parent::where('username',$username)->first();
         if (!$user) return false;
         return $user;
     }
 
-    public function isLoginValid($username,$password) {
+    public function isLoginValid($username,$password)
+    {
 
         $user = self::isAuthenticable($username);
         if (!$this->isCorrectPassword($password, $user)) return false;
         return true;
     }
 
-    protected function setMessage($value) {
+    protected function setMessage($value)
+    {
         $this->messages[] = $value;
     }
 
-    protected function getMessages() {
+    protected function getMessages()
+    {
         return $this->messages;
     }
 
-    public function setCertificates($private,$public) {
+    public function setCertificates($private,$public)
+    {
         $this->cert_private = $private;
         $this->cert_public = $public;
         return true;
     }
 
-    public function setJWT($payload) {
+    public function setJWT($payload)
+    {
         $jws  = new SimpleJWS([
             'alg' => 'RS256'
         ]);
@@ -59,7 +65,8 @@ class Authenticable extends Model
         return $this->jwt_token;
     }
 
-    public function getJWTPayload($session_var) {
+    public function getJWTPayload($session_var)
+    {
         $cert = file_get_contents($this->cert_public);
 
         if (!isset($session_var)) return false;
@@ -76,15 +83,16 @@ class Authenticable extends Model
     }
 
 
-    public function isAuthorized($session_var) {
+    public function isAuthorized($session_var)
+    {
         if (empty($session_var)) return false;
         $payload = $this->getJWTPayload($session_var);
         if ( (!isset($payload['data']['id'])) || (!is_numeric($payload['data']['id'])) ) return false;
-//        print_r($payload); exit;
         return true;
     }
 
-    public function isCorrectPassword($supposedPassword, $user = null) {
+    public function isCorrectPassword($supposedPassword, $user = null)
+    {
         $bcrypt = new Bcrypt();
         if ($user === null) {
             $user = $this;
@@ -92,7 +100,8 @@ class Authenticable extends Model
         return $bcrypt->verify($supposedPassword, $user->password);
     }
 
-    public function setLoginBlacklist($session_var) {
+    public function setLoginBlacklist($session_var)
+    {
         // TODO: melhorar esse trecho, mas como só usa aqui...
         if (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             $ip = $_SERVER['HTTP_CLIENT_IP'];
@@ -108,7 +117,8 @@ class Authenticable extends Model
         return true;
     }
 
-    public function hasMultiplesLogins($options) {
+    public function hasMultiplesLogins($options)
+    {
         $user_id = $this->id;
         if ($options['force']) {
             // desloga todas as sessões existentes deste usuário
@@ -130,11 +140,13 @@ class Authenticable extends Model
         return ($rows->count()>0) ? true : false;
     }
 
-    public function updateLoginSessionDate($token) {
+    public function updateLoginSessionDate($token)
+    {
         LoginBlacklist::updateDate($token);
     }
 
-    public function killSession($session_manager) {
+    public function killSession($session_manager)
+    {
         $session_manager->getManager()->getStorage()->clear('axpp');
         LoginBlacklist::killAllSessions($this->id);
         return true;
@@ -143,7 +155,8 @@ class Authenticable extends Model
     /**
      * Updates the last time user logged in
      */
-    public function updateLastLogin() {
+    public function updateLastLogin()
+    {
         $date_utc = new \DateTime(null, new \DateTimeZone("UTC"));
         $this->last_login = $date_utc->format("Y-m-d H:i:s");
         $this->save();

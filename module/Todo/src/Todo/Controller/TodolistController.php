@@ -10,13 +10,15 @@ class TodolistController extends ApplicationController
 {
     protected $bypass_routes = ['/v1/todolist/'];
 
-    public function get(Request $request) {
+    public function get(Request $request)
+    {
         $todolist_id = $this->params()->fromRoute('id',null);
         $list = (empty($todolist_id)) ? Todolist::findByUserId($this->user_logged->id) : Todolist::findById($todolist_id);
         return $this->returnData(['status' => 200, 'data' => ["todolists" => $list]]);
     }
 
-    public function post(Request $request) {
+    public function post(Request $request)
+    {
         // validações iniciais
         if (($return = $this->basicCheck('post')) !== NULL) return $return;
         if (!$this->isJson($request->getContent())) return $this->returnData(['status' => 401, 'data' => ['message' => 'missing json object.']]);
@@ -34,7 +36,8 @@ class TodolistController extends ApplicationController
 
     }
 
-    public function put(Request $request) {
+    public function put(Request $request)
+    {
         // validações iniciais
         if (($return = $this->basicCheck('put')) !== NULL) return $return;
         if (!$this->isJson($request->getContent())) return $this->returnData(['status' => 401, 'data' => ['message' => 'missing json object.']]);
@@ -62,7 +65,8 @@ class TodolistController extends ApplicationController
 
     }
 
-    public function delete(Request $request) {
+    public function delete(Request $request)
+    {
         $todolist_id = $this->params()->fromRoute('id');
 
         $todolist = Todolist::find($todolist_id);

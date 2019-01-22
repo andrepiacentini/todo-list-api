@@ -1,13 +1,6 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andrepiacentini
- * Date: 31/05/18
- * Time: 19:34
- */
 
 namespace Todo\Model;
-
 
 use Application\Model\User;
 use Illuminate\Database\Eloquent\Model;
@@ -22,21 +15,25 @@ class Todolist extends Model
         "user_id"
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function tasks() {
+    public function tasks()
+    {
         return $this->hasMany(Task::class);
     }
 
-    public function findByUserId($user_id) {
+    public function findByUserId($user_id)
+    {
         return self::where('user_id',$user_id)
             ->with(['user','tasks'])
             ->get();
     }
 
-    public function findById($todolist_id) {
+    public function findById($todolist_id)
+    {
         return self::where('id',$todolist_id)
             ->with(['user','tasks'])
             ->first();

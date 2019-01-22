@@ -101,7 +101,8 @@ class AuthenticateController extends ApplicationController
         return $this->returnData(['status' => 200, 'data' => ['jwt_token' => $jwt_string]]);
     }
 
-    public function logoutAction() {
+    public function logoutAction()
+    {
         if (($return = $this->checkMethod('get')) !== NULL) return $return;
 
         $user = $this->getUserLogged();
@@ -112,7 +113,8 @@ class AuthenticateController extends ApplicationController
         return $this->returnData(['status' => 200, 'data' => ['message' => 'logout']]);
     }
 
-    public function getTokenContentAction() {
+    public function getTokenContentAction()
+    {
         if (($return = $this->checkMethod('get')) !== NULL) return $return;
 
         if (!isset($this->jwt))
@@ -156,7 +158,6 @@ class AuthenticateController extends ApplicationController
         }
 
         // Create recovery hash
-        //$hash = Hash::make($email);
         $hash = md5(uniqid(rand(), true));
         $user->remember_token = $hash;
         $user->save();
@@ -223,7 +224,6 @@ class AuthenticateController extends ApplicationController
         if (($return = $this->checkMethod('get')) !== NULL) return $return;
 
         $hash = $this->params()->fromQuery('hash');
-//        var_dump($hash);exit;
 
         if (!$hash || empty($hash))
             return $this->returnData(["status" => 400, "data" => "Invalid request"]);

@@ -17,7 +17,6 @@ trait Pagination
     public static function paginated($query, $qtdPerPage = 5, $page = 1, $order = null, $direction = 'asc')
     {
         $total = count($query->get());
-//        var_dump($total);exit;
         $totalPages = (int) ceil($total / $qtdPerPage);
 
         if ($totalPages < 1) {

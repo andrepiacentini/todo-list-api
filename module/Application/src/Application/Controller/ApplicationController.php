@@ -114,7 +114,8 @@ abstract class ApplicationController extends AbstractActionController
     /**
      * @return User
      */
-    protected function getUserLogged() {
+    protected function getUserLogged()
+    {
         // Se existir ao JWT token em cookie, reativa
         if (isset($this->oContainer->api_secret)) {
             $this->user_logged = new User();
@@ -153,7 +154,8 @@ abstract class ApplicationController extends AbstractActionController
         return $this->returnData(["status" => 404, "data" => ["message" => 'Page not found']]);
     }
 
-    public function get(Request $request) {
+    public function get(Request $request)
+    {
 
         $modelName = $this->getModelName();
 
@@ -171,7 +173,8 @@ abstract class ApplicationController extends AbstractActionController
         return $this->returnData(['status' => 200, 'data' => $data]);
     }
 
-    public function delete(Request $request) {
+    public function delete(Request $request)
+    {
         $modelName = $this->getModelName();
 
         // Params
@@ -183,7 +186,8 @@ abstract class ApplicationController extends AbstractActionController
         return $this->returnData(['status' => 200, 'data' => $deletedId]);
     }
 
-    public function put(Request $request) {
+    public function put(Request $request)
+    {
         $modelName = $this->getModelName();
 
         $id = $this->params()->fromQuery('id');
@@ -200,7 +204,8 @@ abstract class ApplicationController extends AbstractActionController
         return $this->returnData(['status' => 200, 'data' => $regional]);
     }
 
-    public function post(Request $request) {
+    public function post(Request $request)
+    {
         $modelName = $this->getModelName();
 
         // Params

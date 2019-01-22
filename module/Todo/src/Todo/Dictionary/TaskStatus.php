@@ -19,7 +19,8 @@ abstract class TaskStatus
         self::STATUS_CLOSED         => 'concluído',
     ];
 
-    public static function getAll() {
+    public static function getAll()
+    {
         return self::$label;
     }
 

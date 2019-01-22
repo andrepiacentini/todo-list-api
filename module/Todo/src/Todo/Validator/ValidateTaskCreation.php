@@ -5,7 +5,8 @@ use Exception;
 
 class ValidateTaskCreation
 {
-    public static function validate($post_data,$todolist,$user_logged):bool {
+    public static function validate($post_data,$todolist=null,$user_logged):bool
+    {
         if (empty($post_data["title"])) {
             throw new Exception('missing task title', 401);
         }

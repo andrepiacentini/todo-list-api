@@ -2,12 +2,15 @@
 
 Uma API simples para gerenciamento de tarefas organizadas por usuários.
 
-Esta API foi criada para atender a um teste de desenvolvimento.
+Esta API foi criada para atender a um teste de desenvolvimento. Ela foi estendida de um projeto Boilerplate que criei, disponível em https://github.com/andrepiacentini/boilerplate-api
+Todos os arquivos desnecessários foram removidos, porém algumas classes podem conter métodos que não necessariamente são utilizados para este projeto exemplo.
+
+Uma outra API desenvolvida em Lumen + Dingo poderia ser utilizada mas optei em não utilizar pois encapsula muitas regras que gostaria de mostrar (como o Authenticate com JWT), 
 
 ## Requisitos mínimos
 - PHP 7.1+
 - MySQL 5.6+
-- Composer
+- Composer (https://getcomposer.org)
 
 
 ## Instalação
@@ -58,16 +61,15 @@ php vendor/bin/phinx init
 
 Alterar o arquivo phinx.yml:
 - substituir  `/db/` por `/database/` do caminho dos arquivos de migração; (linhas 2 e 3)
-- alterar o bloco `development` conforme seu ambiente; (por default:localhost/root/sem senha)
-- alterar o campo `default_database` para `skeleton`;
+- alterar o bloco `development` conforme seu ambiente;
 
-Para criar a base executar:
+Para criar o banco, basta executar a partir da raiz do projeto:
 
 ```bash
 php vendor/bin/phinx migrate -e development
 ```
 
-Para popular com dados iniciais a base:
+Para popular com dados iniciais o banco, execute a partir da raiz do projeto:
 
 ```bash
 php vendor/bin/phinx seed:run -e development
@@ -76,12 +78,13 @@ php vendor/bin/phinx seed:run -e development
 
 ## Como iniciar?
 
-Basta abrir o terminal, posicionar até a raiz do projeto (dentro da pasta do projeto) e executar o seguinte comando:
+Basta abrir o terminal, posicionar até a raiz do projeto e executar o seguinte comando:
 ```bash
 php -S localhost:<PORTA> public/index.php
 ```
 
-## Pontos a serem melhorados
+## Onde estão os endpoints?
 
-Alguns itens já identificados e que podem ser melhorados em uma próxima versão para otimizar código:
-- Uso de Validators nos métodos de verbo (get, post, put, del), reduzindo a complexidade e limpando o código;
+Utilize o Postman para acessar os endpoints desta API (https://getpostman.com)
+
+Após sua instalação, importe a coleção (`/data/collection.json`) e o ambiente (`/data/environment.json`)

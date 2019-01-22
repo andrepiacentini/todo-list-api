@@ -75,7 +75,6 @@ class FilesService implements FilesServiceInterface, InputFilterAwareInterface
     {
         foreach ($files as $file) {
             $filter = clone $this->getInputFilter();
-//            var_dump($filter->getInput()->getValidatorChain());exit;
             $filter->setData([FilesInputFilter::FILE => $file]);
             try {
                 if (! $filter->isValid()) {

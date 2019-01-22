@@ -1,11 +1,6 @@
 <?php
 namespace Application\Model;
 
-/**
- * Classe para metodos estaticos que podem ser usados por mais de um model
- * @author Murilo
- * @package Application\Model
- */
 class UtilsFacade
 {
     /**

@@ -1,10 +1,6 @@
 <?php
 namespace Application\Email;
 
-//use Application\Model\Log;
-//use Application\Model\ServiceManager;
-//use Zend\Db\Adapter\Adapter;
-//use Zend\Db\Sql\Sql;
 use Zend\Mail\Transport\Smtp;
 use Zend\Mail\Transport\SmtpOptions;
 use Zend\Mail\Message;
@@ -15,7 +11,8 @@ use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver\TemplateMapResolver;
 
-abstract class Mailable implements ServiceLocatorAwareInterface {
+abstract class Mailable implements ServiceLocatorAwareInterface
+{
     use ServiceLocatorAwareTrait;
     protected $message;
     protected $mail;
@@ -47,7 +44,8 @@ abstract class Mailable implements ServiceLocatorAwareInterface {
         $this->boot();
     }
 
-    public function setView($file) {
+    public function setView($file)
+    {
         $this->view = $file;
     }
 
@@ -188,7 +186,8 @@ abstract class Mailable implements ServiceLocatorAwareInterface {
         return $this->message->getSubject();
     }
 
-    public function setSubject($subject){
+    public function setSubject($subject)
+    {
         $this->message->setSubject($subject);
 
         return $this; //Make it CHAIN
@@ -284,9 +283,6 @@ abstract class Mailable implements ServiceLocatorAwareInterface {
     protected function log($recipient)
     {
         //TODO define log structure
-//        $statement = Log::create([
-//            'log' => $recipient,
-//        ]);
     }
 
     public function send()
@@ -316,16 +312,6 @@ abstract class Mailable implements ServiceLocatorAwareInterface {
     public function alreadySentToRecipient($recipient,$returnCount = false)
     {
         return false;
-//        $type = get_called_class();
-//
-//
-//        $statement = Log::where([
-//            'type' => $type,
-//            'recipient' => $recipient
-//        ]);
-//
-//
-//        return $returnCount ? $statement->count() : $statement->count() > 0;
     }
 
     public function setServiceManager($sm)

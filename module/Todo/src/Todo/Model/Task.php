@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: andrepiacentini
- * Date: 31/05/18
- * Time: 19:34
- */
 
 namespace Todo\Model;
 
@@ -30,21 +24,25 @@ class Task extends Model
         "status_description"
     ];
 
-    public function todolist() {
+    public function todolist()
+    {
         return $this->belongsTo(Todolist::class);
     }
 
-    public function setStatusDescriptionAttribute() {
+    public function setStatusDescriptionAttribute()
+    {
         return TaskStatus::$label[$this->status];
     }
 
-    public function findByUserId($user_id) {
+    public function findByUserId($user_id)
+    {
         return self::where('user_id',$user_id)
             ->with(['todolist'])
             ->get();
     }
 
-    public function findByTodolistId($todolist_id) {
+    public function findByTodolistId($todolist_id)
+    {
         $task = self::where('todolist_id',$todolist_id)
             ->with(['todolist'])
             ->get();
@@ -52,7 +50,8 @@ class Task extends Model
         return $task;
     }
 
-    public function findById($task_id) {
+    public function findById($task_id)
+    {
         $task = self::where('id',$task_id)
             ->with(['todolist'])
             ->first();

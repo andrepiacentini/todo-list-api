@@ -1,11 +1,5 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: murilo
- * Date: 4/18/17
- * Time: 4:44 PM
- */
 class SmtpConfig extends \Zend\Mail\Transport\SmtpOptions
 {
     public function __construct($options = null)

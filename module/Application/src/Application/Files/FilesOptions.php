@@ -1,7 +1,6 @@
 <?php
 namespace Application\Files;
 
-
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Zend\Stdlib\AbstractOptions;
 
@@ -45,12 +44,6 @@ class FilesOptions extends AbstractOptions
      */
     public function setBasePath($basePath)
     {
-//        if ($this->isAws) {
-//            $basePath = str_replace("public", "", $basePath);
-//            $basePath = str_replace("./", "", $basePath);
-//            $basePath = 's3://';
-//        }
-
         if (! is_dir($basePath)) {
             try {
                 mkdir($basePath, 0777, true);
@@ -83,7 +76,8 @@ class FilesOptions extends AbstractOptions
     /**
      * @return array
      */
-    public function getMimeGroups() {
+    public function getMimeGroups()
+    {
         return $this->mimeGroups;
     }
 

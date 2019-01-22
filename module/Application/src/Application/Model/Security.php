@@ -3,17 +3,17 @@
 
     use Zend\Db\Sql\Sql;
 
-	class Security  {
+	class Security
+    {
 		private $dbAdapter;
 		private $sql;
 
-		public function __construct($oSM) {
+		public function __construct($oSM)
+        {
 			$this->dbAdapter = $oSM->get("Zend\Db\Adapter\Adapter");
 			$this->sql = new Sql($this->dbAdapter);
 		}
-		
 
-	
     	/**
     	 * returnHeaderCode function.
     	 * 
@@ -21,7 +21,8 @@
     	 * @param mixed $code
     	 * @return void
     	 */
-    	public function returnHeaderCode($code) {
+    	public function returnHeaderCode($code)
+        {
     	    $http_status = [
     	        100 => 'Continue',    
                 101 => 'Switching Protocols',

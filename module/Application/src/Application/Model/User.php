@@ -7,9 +7,6 @@ use Zend\Crypt\Password\Bcrypt;
 
 class User extends Authenticable
 {
-
-//    use EntrustUserTrait;
-
     use SoftDeletes;
     use Pagination;
 
@@ -58,7 +55,8 @@ class User extends Authenticable
         $this->attributes['remember_token'] = $value;
     }
 
-    public function setPasswordAttribute($value) {
+    public function setPasswordAttribute($value)
+    {
         if ($value!="") {
             $validator = new \Application\Validators\Password();
             if ($validator->isValid($value)) {
@@ -73,7 +71,8 @@ class User extends Authenticable
         }
     }
 
-    public function isValid() {
+    public function isValid()
+    {
         if (count($this->messages)>0) return $this->messages;
         return true;
     }
@@ -83,11 +82,13 @@ class User extends Authenticable
         return $this->messages;
     }
 
-    public function areaPermissions() {
+    public function areaPermissions()
+    {
         return $this->hasMany(AreaPermission::class);
     }
 
-    public function getImageAttribute($image) {
+    public function getImageAttribute($image)
+    {
         return UtilsFacade::prependServerUrl($image);
     }
 }
