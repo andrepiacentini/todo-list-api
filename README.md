@@ -88,3 +88,13 @@ php -S localhost:<PORTA> public/index.php
 Utilize o Postman para acessar os endpoints desta API (https://getpostman.com)
 
 Após sua instalação, importe a coleção (`/data/collection.json`) e o ambiente (`/data/environment.json`)
+
+Comece pelo request `Autenticar` da coleção. Em seguida crie sua primeira Todo List usando a request `Lists > Criar Lista`
+
+Criada a primeira lista, use o seu ID para passar como parâmetro no endpoint `Tasks > Criar Tarefa`
+
+
+## O que precisa melhorar?
+
+* Documentação mais amigável usando Swagger;
+* Interface para uso da API (novo projeto em breve)  
