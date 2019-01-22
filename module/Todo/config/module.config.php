@@ -15,7 +15,7 @@ return array(
                     ),
                 ),
             ),
-            'tasklist' => array(
+            'todolist' => array(
                 'type' => 'segment',
                 'options' => array(
                     'route' => '/v1/todolist[/][:action][/][:id][/]',

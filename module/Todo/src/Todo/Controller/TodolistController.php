@@ -8,11 +8,11 @@ use Todo\Model\Todolist;
 
 class TodolistController extends ApplicationController
 {
-    protected $bypass_routes = [];
+    protected $bypass_routes = ['/v1/todolist/'];
 
     public function get(Request $request) {
         $list = Todolist::findByUserId($this->user_logged->id);
-        return $this->returnData(['status' => 200, 'data' => ["Todolists" => $list]]);
+        return $this->returnData(['status' => 200, 'data' => ["todolists" => $list]]);
     }
 
     public function post(Request $request) {
@@ -24,7 +24,10 @@ class TodolistController extends ApplicationController
         $post_data = get_object_vars(json_decode($request->getContent()));
 
         if (empty($post_data["name"])) return $this->returnData(['status' => 401, 'data' => ['message' => 'missing todolist name']]);
-        if (empty($post_data["user_id"])) return $this->returnData(['status' => 401, 'data' => ['message' => 'missing todolist user id owner']]);
+        $post_data["user_id"] = $this->user_logged->id;
+
+        // validations
+        if (count(Todolist::where('user_id',$this->user_logged->id)->where('name',$post_data['name'])->get())>0) return $this->returnData(['status' => 401, 'data' => ['message' => 'a todolist with this name already exists']]);
 
         // cria
         $todolist = Todolist::create($post_data);
@@ -44,6 +47,9 @@ class TodolistController extends ApplicationController
 
         if (empty($post_data["name"])) return $this->returnData(['status' => 401, 'data' => ['message' => 'missing todolist name']]);
         if (empty($todolist_id)) return $this->returnData(['status' => 401, 'data' => ['message' => 'missing todolist id']]);
+
+        // validations
+        if (count(Todolist::where('user_id',$this->user_logged->id)->where('name',$post_data['name'])->where('todolist_id','!=',$todolist_id)->get())>0) return $this->returnData(['status' => 401, 'data' => ['message' => 'a todolist with this name already exists']]);
 
         // update
         $todolist = Todolist::find($todolist_id);

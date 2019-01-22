@@ -18,9 +18,13 @@ class AreaPermission extends Model
     protected $areas_actions = [
         self::AREA_ADMINISTRATOR => [
             'Application\\Controller\\Index\\index',
+            'Todo\\Controller\\Todolist\\index',
+            'Todo\\Controller\\Task\\index',
         ],
         self::AREA_USER => [
             'Application\\Controller\\Index\\index',
+            'Todo\\Controller\\Todolist\\index',
+            'Todo\\Controller\\Task\\index',
         ],
         self::ALWAYS_HAVE_ACCESS  => [
             'Authenticate\\Controller\\Authenticate\\getTokenContent',

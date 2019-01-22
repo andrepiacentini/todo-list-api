@@ -22,7 +22,8 @@ class Task extends Model
         "description",
         "tasklist_id",
         "status",
-        "done"
+        "done",
+        "priority"
     ];
 
     protected $cast = [

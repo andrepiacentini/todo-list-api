@@ -1,20 +1,60 @@
 {
 	"info": {
-		"_postman_id": "5990573a-beea-4a66-8f2a-d2354c82da68",
-		"name": "Boilerplate API",
+		"_postman_id": "5ce123f1-bc09-4e49-a3db-bced3d6aa51a",
+		"name": "Todo List API",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
+		{
+			"name": "Lists",
+			"item": [
+				{
+					"name": "Listar todas",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{jwt_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{api}}{{version}}/todolist/",
+							"host": [
+								"{{api}}{{version}}"
+							],
+							"path": [
+								"todolist",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
 		{
 			"name": "Hello world, estou vivo!",
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "{{api}}/",
+					"raw": "{{api}}{{version}}/",
 					"host": [
-						"{{api}}"
+						"{{api}}{{version}}"
 					],
 					"path": [
 						""
@@ -25,6 +65,23 @@
 		},
 		{
 			"name": "Autenticar",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "879e8f6a-cd65-4a86-ab53-1cd0c0819458",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"    ",
+							"    var jsonData = JSON.parse(responseBody);",
+							"    postman.setEnvironmentVariable(\"jwt_token\", jsonData.jwt_token);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
 			"request": {
 				"method": "POST",
 				"header": [
@@ -38,9 +95,9 @@
 					"raw": "{\n\t\"username\" : \"teste@andrepiacentini.com.br\",\n\t\"password\" : \"secret123\",\n\t\"lang\"\t\t: {\n\t\t\"code\" : \"pt-br\"\n\t},\n\t\"force\" : true\n}"
 				},
 				"url": {
-					"raw": "{{api}}/authenticate/authenticate",
+					"raw": "{{api}}{{version}}/authenticate/authenticate",
 					"host": [
-						"{{api}}"
+						"{{api}}{{version}}"
 					],
 					"path": [
 						"authenticate",
@@ -53,13 +110,26 @@
 		{
 			"name": "Retorna dados usuário logado",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{jwt_token}}",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
-				"body": {},
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
 				"url": {
-					"raw": "{{api}}/authenticate/getTokenContent",
+					"raw": "{{api}}{{version}}/authenticate/getTokenContent",
 					"host": [
-						"{{api}}"
+						"{{api}}{{version}}"
 					],
 					"path": [
 						"authenticate",
