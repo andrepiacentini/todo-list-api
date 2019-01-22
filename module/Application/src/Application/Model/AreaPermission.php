@@ -19,28 +19,35 @@ class AreaPermission extends Model
         self::AREA_ADMINISTRATOR => [
             'Application\\Controller\\Index\\index',
             'Todo\\Controller\\Todolist\\index',
+            'Todo\\Controller\\Todolist',
             'Todo\\Controller\\Task\\index',
+            'Todo\\Controller\\Task',
         ],
         self::AREA_USER => [
             'Application\\Controller\\Index\\index',
             'Todo\\Controller\\Todolist\\index',
+            'Todo\\Controller\\Todolist',
             'Todo\\Controller\\Task\\index',
+            'Todo\\Controller\\Task',
         ],
         self::ALWAYS_HAVE_ACCESS  => [
             'Authenticate\\Controller\\Authenticate\\getTokenContent',
         ]
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class);
     }
 
-    public function getAll($user_id) {
+    public function getAll($user_id)
+    {
         $areas = self::where('user_id', $user_id)->get();
         return $areas;
     }
 
-    public function hasAccess($user_id, $wic) {
+    public function hasAccess($user_id, $wic)
+    {
         $areas = self::where('user_id', $user_id)->get();
         $has_access = false;
         if ((is_object($areas)) && ($areas->count() > 0)) {
@@ -58,7 +65,8 @@ class AreaPermission extends Model
      * Return all areas
      * @return array
      */
-    public static function getAreas() {
+    public static function getAreas()
+    {
         $reflectedClass = new \ReflectionClass(self::class);
         $constants = $reflectedClass->getConstants();
         $areas = array();
@@ -77,7 +85,8 @@ class AreaPermission extends Model
      * @param $area
      * @return bool
      */
-    public static function isValidArea($area) {
+    public static function isValidArea($area)
+    {
         $areas = self::getAreas();
         return array_search($area, array_column($areas, 'area')) !== FALSE;
     }

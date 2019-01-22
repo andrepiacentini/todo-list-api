@@ -37,8 +37,9 @@ class TodoTables extends AbstractMigration
             ->create();
 
         $table = $this->table('tasks');
-        $table->addColumn('list_id','integer')
+        $table->addColumn('todolist_id','integer')
             ->addColumn('title', 'string')
+            ->addColumn('user_id','integer')
             ->addColumn('description', 'text')
             ->addColumn('done', 'boolean')
             ->addColumn('status', 'string')
@@ -46,7 +47,8 @@ class TodoTables extends AbstractMigration
             ->addColumn('updated_at', 'datetime', ['null' => true])
             ->addColumn('deleted_at', 'datetime', ['null' => true])
             ->addColumn('concluded_at', 'datetime', ['null' => true])
-            ->addForeignKey('list_id', 'todolists', 'id', array('delete' => 'CASCADE', 'update' => 'CASCADE'))
+            ->addForeignKey('todolist_id', 'todolists', 'id', array('delete' => 'CASCADE', 'update' => 'CASCADE'))
+            ->addForeignKey('user_id', 'users', 'id', array('delete' => 'CASCADE', 'update' => 'CASCADE'))
             ->create();
 
     }

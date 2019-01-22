@@ -8,7 +8,6 @@
 
 namespace Todo\Model;
 
-
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Todo\Dictionary\TaskStatus;
@@ -19,8 +18,9 @@ class Task extends Model
     
     protected $fillable = [
         "title",
+        "user_id",
         "description",
-        "tasklist_id",
+        "todolist_id",
         "status",
         "done",
         "priority"
@@ -38,11 +38,27 @@ class Task extends Model
         return TaskStatus::$label[$this->status];
     }
 
-    public function findByTasklistId($tasklist_id) {
-        $task = self::where('list_id',$tasklist_id)
+    public function findByUserId($user_id) {
+        return self::where('user_id',$user_id)
+            ->with(['todolist'])
+            ->get();
+    }
+
+    public function findByTodolistId($todolist_id) {
+        $task = self::where('todolist_id',$todolist_id)
             ->with(['todolist'])
             ->get();
         $task->status_description = TaskStatus::$label[$task->status];
+        return $task;
+    }
+
+    public function findById($task_id) {
+        $task = self::where('id',$task_id)
+            ->with(['todolist'])
+            ->first();
+        if ($task) {
+            $task->status_description = TaskStatus::$label[$task->status];
+        }
         return $task;
     }
 }

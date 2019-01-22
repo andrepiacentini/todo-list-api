@@ -35,4 +35,10 @@ class Todolist extends Model
             ->with(['user','tasks'])
             ->get();
     }
+
+    public function findById($todolist_id) {
+        return self::where('id',$todolist_id)
+            ->with(['user','tasks'])
+            ->first();
+    }
 }
