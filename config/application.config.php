@@ -9,6 +9,7 @@ return array(
     'modules' => array(
         'Application',
         'Authenticate',
+        'Todo',
     ),
     'module_listener_options' => array(
         'module_paths' => array(
@@ -17,7 +18,6 @@ return array(
         ),
         'config_glob_paths' => array(
             'config/autoload/{,*.}{global,local}.php',
-            /*'config/autoload/{,*.}{global,local}..php',*/
         ),
     ),
 );
