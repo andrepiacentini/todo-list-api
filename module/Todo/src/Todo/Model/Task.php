@@ -38,6 +38,7 @@ class Task extends Model
     {
         return self::where('user_id',$user_id)
             ->with(['todolist'])
+            ->orderBy('priority','asc')
             ->get();
     }
 
@@ -45,6 +46,7 @@ class Task extends Model
     {
         $task = self::where('todolist_id',$todolist_id)
             ->with(['todolist'])
+            ->orderBy('priority','asc')
             ->get();
         $task->status_description = TaskStatus::$label[$task->status];
         return $task;
