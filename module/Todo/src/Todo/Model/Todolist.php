@@ -22,7 +22,7 @@ class Todolist extends Model
 
     public function tasks()
     {
-        return $this->hasMany(Task::class);
+        return $this->hasMany(Task::class)->orderBy('priority','asc');
     }
 
     public function findByUserId($user_id)
